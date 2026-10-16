@@ -1,4 +1,5 @@
-import { ResponsiveContainer, BarChart, Bar, XAxis, YAxis, Tooltip, CartesianGrid } from 'recharts'
+import { ResponsiveContainer, BarChart, Bar, XAxis, YAxis, Tooltip, LabelList } from 'recharts'
+import { formatCategory, formatCurrency } from './format.js'
 
 function SpendingChart({ transactions }) {
   const totalsByCategory = {};
@@ -12,22 +13,40 @@ function SpendingChart({ transactions }) {
     .sort((a, b) => b.total - a.total);
 
   return (
-    <div className="spending-chart">
-      <h2>Spending by Category</h2>
+    <section className="panel spending-chart">
+      <h2>Where your money went</h2>
       {data.length === 0 ? (
-        <p className="empty-chart">No expenses yet.</p>
+        <p className="empty">No spending yet. Expenses you add will show up here by category.</p>
       ) : (
-        <ResponsiveContainer width="100%" height={data.length * 40 + 40}>
-          <BarChart data={data} layout="vertical" margin={{ top: 0, right: 24, bottom: 0, left: 0 }}>
-            <CartesianGrid horizontal={false} stroke="#eee" />
-            <XAxis type="number" tickFormatter={value => `$${value}`} tick={{ fontSize: 12, fill: "#888" }} />
-            <YAxis type="category" dataKey="category" width={100} tick={{ fontSize: 13, fill: "#333" }} />
-            <Tooltip formatter={value => [`$${value}`, "Spent"]} cursor={{ fill: "#f5f5f5" }} />
-            <Bar dataKey="total" fill="#d9534f" barSize={20} radius={[0, 4, 4, 0]} />
+        <ResponsiveContainer width="100%" height={data.length * 44 + 8}>
+          <BarChart data={data} layout="vertical" margin={{ top: 4, right: 72, bottom: 4, left: 0 }}>
+            <XAxis type="number" hide />
+            <YAxis
+              type="category"
+              dataKey="category"
+              width={104}
+              axisLine={false}
+              tickLine={false}
+              tickFormatter={formatCategory}
+            />
+            <Tooltip
+              formatter={value => [formatCurrency(value), "Spent"]}
+              labelFormatter={formatCategory}
+              cursor={{ className: "chart-cursor" }}
+              contentStyle={{
+                background: "var(--surface)",
+                border: "1px solid var(--line)",
+                borderRadius: 8,
+                color: "var(--ink)",
+              }}
+            />
+            <Bar dataKey="total" barSize={18} radius={[0, 9, 9, 0]} isAnimationActive={false}>
+              <LabelList dataKey="total" position="right" offset={10} formatter={formatCurrency} />
+            </Bar>
           </BarChart>
         </ResponsiveContainer>
       )}
-    </div>
+    </section>
   );
 }
 

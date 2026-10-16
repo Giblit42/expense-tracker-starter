@@ -1,11 +1,87 @@
-* {
+:root {
+  /* Banknote paper and intaglio ink */
+  --paper: #e8ede9;
+  --surface: #f7f9f7;
+  --ink: #10302a;
+  --ink-soft: #4c6660;
+  --line: #c9d5cf;
+  --income: #1e6b4e;
+  --expense: #9b2f3a;
+  --expense-soft: #b4505a;
+  --focus: #2d7a8c;
+
+  /* The note itself stays dark green in both themes */
+  --note: #133b33;
+  --note-ink: #eef3ef;
+  --note-ink-soft: #a9c2b8;
+  --note-engraving: #7fae9c;
+
+  --font-display: "Young Serif", Georgia, serif;
+  --font-body: "Hanken Grotesk", system-ui, sans-serif;
+
+  color-scheme: light;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --paper: #0d1916;
+    --surface: #14231f;
+    --ink: #e2ebe6;
+    --ink-soft: #97ada5;
+    --line: #293c36;
+    --income: #6fc79e;
+    --expense: #e88a92;
+    --expense-soft: #d06b75;
+    --focus: #7cc4d4;
+    --note: #1b3f36;
+    color-scheme: dark;
+  }
+}
+
+*,
+*::before,
+*::after {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
 body {
-  font-family: Arial, sans-serif;
-  background-color: #ffffff;
-  color: #333;
+  font-family: var(--font-body);
+  font-size: 1rem;
+  line-height: 1.5;
+  background-color: var(--paper);
+  color: var(--ink);
+  font-variant-numeric: tabular-nums;
+  -webkit-font-smoothing: antialiased;
+}
+
+button,
+input,
+select {
+  font: inherit;
+  color: inherit;
+}
+
+:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 2px;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
 }
